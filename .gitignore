@@ -1,3 +1,8 @@
+1))))))))))))))))))))
+
+
+####Task1.java####
+
 package mapreduce.demo.task1;
 
 import org.apache.hadoop.fs.Path; 
@@ -40,7 +45,11 @@ public class Task1 {
 		job.waitForCompletion(true);
 	}
 }
-//Mapper class
+
+
+####Task1Mapper.java####
+
+
 package mapreduce.demo.task1;
 
 import java.io.IOException;
@@ -53,14 +62,18 @@ import org.apache.hadoop.mapreduce.*;
 public class Task1Mapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 	public void map(LongWritable key, Text value, Context context) 
 			throws IOException, InterruptedException {
-		String[] lineArray = value.toString().split(",");//spltting the record
-		Text user = new Text(lineArray[4]);//sex of the passenger
+		String[] lineArray = value.toString().split(",");
+		Text sur = new Text(lineArray[4]);//passenger sex
    
-		if(lineArray[1].equals("0"))//validating for survived passenger
-		context.write(user,new IntWritable(1));
+		if(lineArray[1].equals("0"))//survived passenger
+		context.write(sur,new IntWritable(1));
 	}
-  //reducer class
-  package mapreduce.demo.task1;
+	
+	
+####Task1Reducer.java####
+  
+  
+package mapreduce.demo.task1;
 
 import java.io.IOException;
 
@@ -72,16 +85,16 @@ public class Task1Reducer extends Reducer<Text, IntWritable, Text, IntWritable>
 {	
 	public void reduce(Text key, Iterable<IntWritable> values,Context context) throws IOException, InterruptedException
 	{
-		int sum = 0;
+		int Val = 0;
 		
 	    	
-		for (IntWritable value : values) {
+		for (IntWritable v : values) {
             
-			sum = sum + value.get() ;
+			Val = Val + v.get() ;
 		}
 		
 
-		context.write(key, new IntWritable(sum));
+		context.write(key, new IntWritable(Val));
 	}
 }
 
